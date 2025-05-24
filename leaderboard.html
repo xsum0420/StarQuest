@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard - StarQuest</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .leaderboard {
+            margin-top: 20px;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+            .leaderboard h2 {
+                text-align: center;
+            }
+
+            .leaderboard table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .leaderboard table, .leaderboard th, .leaderboard td {
+                border: 1px solid #ddd;
+            }
+
+            .leaderboard th, .leaderboard td {
+                padding: 10px;
+                text-align: center;
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>StarQuest Leaderboard</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="get-started.html">Get Started</a>
+            <a href="fundraiser.html">Fundraiser</a>
+        </nav>
+    </header>
+
+    <!-- Leaderboards for each category -->
+    <div id="foodWasteLeaderboard" class="leaderboard">
+        <h2>Food Waste</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Stars</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="foodWasteTable"></tbody>
+        </table>
+    </div>
+
+    <div id="marineTrashLeaderboard" class="leaderboard">
+        <h2>Marine Trash</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Stars</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="marineTrashTable"></tbody>
+        </table>
+    </div>
+
+    <div id="recyclingLeaderboard" class="leaderboard">
+        <h2>Recycling</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Stars</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="recyclingTable"></tbody>
+        </table>
+    </div>
+
+    <div id="animalWelfareLeaderboard" class="leaderboard">
+        <h2>Animal Welfare</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Stars</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="animalWelfareTable"></tbody>
+        </table>
+    </div>
+
+    <div id="waterWasteLeaderboard" class="leaderboard">
+        <h2>Water Waste</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Stars</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="waterWasteTable"></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 StarQuest. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase & Script -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZQi8QUejL9wQHkZ8MPgwceaTd17eGo28",
+            authDomain: "betterworld-31ccc.firebaseapp.com",
+            projectId: "betterworld-31ccc",
+            storageBucket: "betterworld-31ccc.appspot.com",
+            messagingSenderId: "137770038282",
+            appId: "1:137770038282:web:f6f2f5fb245604e9c09bf3",
+            measurementId: "G-E5DK3W4HJZ"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Function to fetch leaderboard data and update the table
+        function fetchLeaderboard(category, tableId) {
+            db.collection("users")
+                .orderBy(`stars.${category}`, "desc")  // Sort by stars in the specific category
+                .limit(10)
+                .get()
+                .then(querySnapshot => {
+                    const tableBody = document.getElementById(tableId);
+                    tableBody.innerHTML = "";  // Clear existing table content
+
+                    querySnapshot.forEach((doc, index) => {
+                        const user = doc.data();
+                        const rank = index + 1;
+                        const stars = user.stars[category] || 0;
+                        const points = user.points[category] || 0;
+
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                                <td>${rank}</td>
+                                <td>${user.displayName}</td>
+                                <td>${stars}</td>
+                                <td>${points}</td>
+                            `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching leaderboard data:", error);
+                });
+        }
+
+        // Fetch leaderboard for all categories
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchLeaderboard("food", "foodWasteTable");
+            fetchLeaderboard("marine", "marineTrashTable");
+            fetchLeaderboard("recycling", "recyclingTable");
+            fetchLeaderboard("animalWelfare", "animalWelfareTable");
+            fetchLeaderboard("waterWaste", "waterWasteTable");
+        });
+    </script>
+</body>
+</html>
