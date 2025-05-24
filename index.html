@@ -5,52 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>StarQuest - Change Starts With One</title>
     <link rel="stylesheet" href="styles.css" />
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
 
-    <script>
-        // Replace with your Firebase config
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            appId: "YOUR_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
-    </script>
+    <style>
+        @media screen and (max-width: 600px) {
+            header, nav, section, footer {
+                padding: 1rem;
+                text-align: center;
+            }
+
+                nav a {
+                    display: block;
+                    margin: 0.5rem 0;
+                }
+
+            input, button {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+
 </head>
 <body>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZQi8QUejL9wQHkZ8MPgwceaTd17eGo28",
-            authDomain: "betterworld-31ccc.firebaseapp.com",
-            projectId: "betterworld-31ccc",
-            storageBucket: "betterworld-31ccc.firebasestorage.app",
-            messagingSenderId: "137770038282",
-            appId: "1:137770038282:web:f6f2f5fb245604e9c09bf3",
-            measurementId: "G-E5DK3W4HJZ"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-    </script>
     <header>
         <h1>Welcome to <span class="brand">StarQuest</span></h1>
-        <p>Change Starts WIth One.</p>
+        <p id = "greeting"> Change Starts WIth One.</p>
         <nav>
             <a href=" ">About Us</a>
             <a href="get-started.html">Get Started</a>
             <a href="fundraiser.html">Fundraiser</a>
+            <a href="leaderboard.html">Leaderboard</a>
         </nav>
     </header>
 
@@ -93,9 +77,61 @@
         <p>Start building your legacy. One action. One star. One world.</p>
         <button onclick="alert('Sign up coming soon!')">Sign Up</button>
     </section>-->
+    <!-- Firebase & Script -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase Configuration (example config - replace with your own)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZQi8QUejL9wQHkZ8MPgwceaTd17eGo28",
+            authDomain: "betterworld-31ccc.firebaseapp.com",
+            projectId: "betterworld-31ccc",
+            storageBucket: "betterworld-31ccc.firebasestorage.app",
+            messagingSenderId: "137770038282",
+            appId: "1:137770038282:web:f6f2f5fb245604e9c09bf3",
+            measurementId: "G-E5DK3W4HJZ"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function register() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    document.getElementById("authStatus").textContent = "Registered & Logged in!";
+                })
+                .catch(error => {
+                    document.getElementById("authStatus").textContent = error.message;
+                });
+        }
+
+        function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    document.getElementById("authStatus").textContent = "Logged in!";
+                })
+                .catch(error => {
+                    document.getElementById("authStatus").textContent = error.message;
+                });
+        }
+
+        function logout() {
+            auth.signOut()
+                .then(() => {
+                    document.getElementById("authStatus").textContent = "Logged out.";
+                });
+        }
+    </script>
 
     <section id="auth">
         <h2>Login / Register</h2>
+        <input type="text" id="username" placeholder="Username (for register only)" />
         <input type="email" id="email" placeholder="Email" />
         <input type="password" id="password" placeholder="Password" />
         <br />
@@ -109,9 +145,5 @@
         <p>&copy; 2025 StarQuest. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase & Script -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
