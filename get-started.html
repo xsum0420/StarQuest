@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Started - StarQuest</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header>
+        <h1>Get Started on Your Mission</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="fundraiser.html">Fundraiser</a>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Choose a Category</h2>
+
+        <!-- Category 1: Food Waste -->
+        <div class="category">
+            <h3>Food Waste</h3>
+            <p>Upload a photo of your finished plate. You will get one point in Food Waste if it is clean!</p>
+            <input type="file" id="foodUpload" accept="image/*" />
+            <button onclick="submitPhotoFood()">Submit</button>
+            <div id="result"></div>
+        </div>
+
+        <!-- Category 2: Marine Trash -->
+        <div class="category">
+            <h3>Marine Trash</h3>
+            <p>Upload a photo of trash collected on a balance. You will get corresponding point in Marine Trash!</p>
+            <input type="file" id="marineUpload" accept="image/*" />
+            <button onclick="submitPhotoMarine()">Submit</button>
+            <div id="result"></div>
+        </div>
+
+        <!-- Category 3: Trash Sorting -->
+        <div class="category">
+            <h3>Trash Sorting</h3>
+            <p>Upload a photo of trash sorted on a balance. You will get corresponding point in Trash Sorting!</p>
+            <input type="file" id="sortingUpload" accept="image/*" />
+            <button onclick="submitPhotoSorting()">Submit</button>
+            <div id="result"></div>
+        </div>
+
+        <!-- Category 4: Animal Welfare -->
+        <div class="category">
+            <h3>Animal Welfare</h3>
+            <p>Upload a photo of animals helped. You will get corresponding point in Animal Welfare!</p>
+            <input type="file" id="welfareUpload" accept="image/*" />
+            <button onclick="submitPhotoWelfare()">Submit</button>
+            <div id="result"></div>
+        </div>
+
+        <!-- Category 5: Water Waste -->
+        <div class="category">
+            <h3>Recycling</h3>
+            <p>Upload a photo of recycled trash on a balance. You will get corresponding point in Recycling!</p>
+            <input type="file" id="recycleUpload" accept="image/*" />
+            <button onclick="submitPhotoRecycle()">Submit</button>
+            <div id="result"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 StarQuest. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
