@@ -1,6 +1,6 @@
 function submitPhotoFood() {
     const uploadInput = document.getElementById("foodUpload");
-    const resultDiv = document.getElementById("result");
+    const resultDiv = document.getElementById("foodresult");
 
 
     console.log(uploadInput);
@@ -24,7 +24,7 @@ function submitPhotoFood() {
 
 function submitPhotoMarine() {
     const uploadInput = document.getElementById("marineUpload");
-    const resultDiv = document.getElementById("result");
+    const resultDiv = document.getElementById("marineresult");
 
 
     console.log(uploadInput);
@@ -48,7 +48,7 @@ function submitPhotoMarine() {
 
 function submitPhotoSorting() {
     const uploadInput = document.getElementById("sortingUpload");
-    const resultDiv = document.getElementById("result");
+    const resultDiv = document.getElementById("sortingresult");
 
 
     console.log(uploadInput);
@@ -72,7 +72,7 @@ function submitPhotoSorting() {
 
 function submitPhotoWelfare() {
     const uploadInput = document.getElementById("welfareUpload");
-    const resultDiv = document.getElementById("result");
+    const resultDiv = document.getElementById("welfareresult");
 
 
     console.log(uploadInput);
@@ -96,7 +96,7 @@ function submitPhotoWelfare() {
 
 function submitPhotoWater() {
     const uploadInput = document.getElementById("waterUpload");
-    const resultDiv = document.getElementById("result");
+    const resultDiv = document.getElementById("waterresult");
 
 
     console.log(uploadInput);
