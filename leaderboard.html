@@ -30,10 +30,48 @@
                 padding: 10px;
                 text-align: center;
             }
+
+        @media screen and (max-width: 600px) {
+            header, nav, section, footer {
+                padding: 1rem;
+                text-align: center;
+            }
+
+                nav a {
+                    display: block;
+                    margin: 0.5rem 0;
+                }
+
+            input, button {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
+
+        #userStats {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 200px;
+        }
+
+            #userStats h3 {
+                margin: 0 0 0.5rem 0;
+                font-size: 1rem;
+            }
     </style>
 </head>
 <body>
-
+    <div id="userStats" style="display: none;">
+        <h3 id="userNameDisplay">User: </h3>
+        <div id="userProgressDisplay"></div>
+    </div>
     <header>
         <h1>StarQuest Leaderboard</h1>
         <nav>
@@ -119,6 +157,71 @@
         </table>
     </div>
 
+    <!-- ✅ Reusable Star Display Script -->
+    <script>
+        const categories = ['food', 'marine', 'recycling', 'animalWelfare', 'waterWaste'];
+
+        function initializePoints() {
+            if (!localStorage.getItem('userData')) {
+                const userData = { points: {}, stars: {} };
+                categories.forEach(cat => {
+                    userData.points[cat] = 0;
+                    userData.stars[cat] = 0;
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
+            }
+        }
+
+        function addPoint(category) {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (!categories.includes(category)) return;
+
+            userData.points[category] += 1;
+            const totalPoints = userData.points[category];
+            let newStars = 0;
+            if (totalPoints >= 10000) newStars = 5;
+            else if (totalPoints >= 5000) newStars = 4;
+            else if (totalPoints >= 1000) newStars = 3;
+            else if (totalPoints >= 100) newStars = 2;
+            else if (totalPoints >= 10) newStars = 1;
+
+            userData.stars[category] = newStars;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            updateUserStatsDisplay();
+        }
+
+        function getUserProgress() {
+            return JSON.parse(localStorage.getItem('userData'));
+        }
+
+        function updateUserStatsDisplay() {
+            const statsDiv = document.getElementById("userStats");
+            const nameDisplay = document.getElementById("userNameDisplay");
+            const progressDiv = document.getElementById("userProgressDisplay");
+
+            const username = localStorage.getItem("currentUserName") || "Anonymous";
+            const data = getUserProgress();
+
+            nameDisplay.textContent = `User: ${username}`;
+
+            let html = '';
+            categories.forEach(cat => {
+                const prettyName = cat.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                const pts = data.points[cat];
+                const stars = '⭐'.repeat(data.stars[cat]);
+                html += `<strong>${prettyName}</strong>: ${pts} pts ${stars}<br>`;
+            });
+
+            progressDiv.innerHTML = html;
+            statsDiv.style.display = "block";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePoints();
+            updateUserStatsDisplay();
+        });
+    </script>
+
     <footer>
         <p>&copy; 2025 StarQuest. All rights reserved.</p>
     </footer>
@@ -162,11 +265,12 @@
 
                         const row = document.createElement("tr");
                         row.innerHTML = `
-                                <td>${rank}</td>
-                                <td>${user.displayName}</td>
-                                <td>${stars}</td>
-                                <td>${points}</td>
-                            `;
+
+                                            <td>${rank}</td>
+                                            <td>${user.displayName}</td>
+                                            <td>${stars}</td>
+                                            <td>${points}</td>
+                                        `;
                         tableBody.appendChild(row);
                     });
                 })
