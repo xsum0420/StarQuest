@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>StarQuest - Change Starts With One</title>
     <link rel="stylesheet" href="styles.css" />
-
     <style>
         @media screen and (max-width: 600px) {
             header, nav, section, footer {
@@ -23,15 +22,38 @@
                 margin-top: 0.5rem;
             }
         }
-    </style>
 
+        #userStats {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 200px;
+        }
+
+            #userStats h3 {
+                margin: 0 0 0.5rem 0;
+                font-size: 1rem;
+            }
+    </style>
 </head>
+
 <body>
+    <div id="userStats" style="display: none;">
+        <h3 id="userNameDisplay">User: </h3>
+        <div id="userProgressDisplay"></div>
+    </div>
+
     <header>
         <h1>Welcome to <span class="brand">StarQuest</span></h1>
-        <p id = "greeting"> Change Starts WIth One.</p>
+        <p id="greeting">Change Starts With One.</p>
         <nav>
-            <a href=" ">About Us</a>
+            <a href="#">About Us</a>
             <a href="get-started.html">Get Started</a>
             <a href="fundraiser.html">Fundraiser</a>
             <a href="leaderboard.html">Leaderboard</a>
@@ -43,7 +65,7 @@
         <p>
             <strong>What is StarQuest?</strong><br />
             StarQuest is a global community committed to solving real-world issues
-            like food waste, marine trash, and recyclin--one small action at a time.
+            like food waste, marine trash, and recycling—one small action at a time.
         </p>
 
         <p>
@@ -66,27 +88,14 @@
         </p>
     </section>
 
-    <!--<section id="fundraiser">
-        <h2>Support the Cause</h2>
-        <p>Help fund the pin system and grassroots action by donating.</p>
-        <button onclick="alert('Redirecting to fundraiser...')">Donate Now</button>
-    </section>
-
-    <section id="join">
-        <h2>Join BetterWorld</h2>
-        <p>Start building your legacy. One action. One star. One world.</p>
-        <button onclick="alert('Sign up coming soon!')">Sign Up</button>
-    </section>-->
-    <!-- Firebase & Script -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script>
-        // Firebase Configuration (example config - replace with your own)
         const firebaseConfig = {
             apiKey: "AIzaSyCZQi8QUejL9wQHkZ8MPgwceaTd17eGo28",
             authDomain: "betterworld-31ccc.firebaseapp.com",
             projectId: "betterworld-31ccc",
-            storageBucket: "betterworld-31ccc.firebasestorage.app",
+            storageBucket: "betterworld-31ccc.appspot.com",
             messagingSenderId: "137770038282",
             appId: "1:137770038282:web:f6f2f5fb245604e9c09bf3",
             measurementId: "G-E5DK3W4HJZ"
@@ -98,10 +107,14 @@
         function register() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
+            const username = document.getElementById("username").value;
+
+            localStorage.setItem("currentUserName", username);
 
             auth.createUserWithEmailAndPassword(email, password)
                 .then(() => {
                     document.getElementById("authStatus").textContent = "Registered & Logged in!";
+                    updateUserStatsDisplay();
                 })
                 .catch(error => {
                     document.getElementById("authStatus").textContent = error.message;
@@ -115,6 +128,7 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => {
                     document.getElementById("authStatus").textContent = "Logged in!";
+                    updateUserStatsDisplay();
                 })
                 .catch(error => {
                     document.getElementById("authStatus").textContent = error.message;
@@ -122,10 +136,10 @@
         }
 
         function logout() {
-            auth.signOut()
-                .then(() => {
-                    document.getElementById("authStatus").textContent = "Logged out.";
-                });
+            auth.signOut().then(() => {
+                document.getElementById("authStatus").textContent = "Logged out.";
+                document.getElementById("userStats").style.display = "none";
+            });
         }
     </script>
 
@@ -141,9 +155,78 @@
         <p id="authStatus"></p>
     </section>
 
+    <!-- 🌟 POINT SYSTEM SCRIPT -->
+    <script>
+        const categories = ['food', 'marine', 'recycling', 'animalWelfare', 'waterWaste'];
+
+        function initializePoints() {
+            if (!localStorage.getItem('userData')) {
+                const userData = { points: {}, stars: {} };
+                categories.forEach(cat => {
+                    userData.points[cat] = 0;
+                    userData.stars[cat] = 0;
+                });
+                localStorage.setItem('userData', JSON.stringify(userData));
+            }
+        }
+
+        function addPoint(category) {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (!categories.includes(category)) return;
+
+            userData.points[category] += 1;
+            const totalPoints = userData.points[category];
+            let newStars = 0;
+            if (totalPoints >= 10000) newStars = 5;
+            else if (totalPoints >= 5000) newStars = 4;
+            else if (totalPoints >= 1000) newStars = 3;
+            else if (totalPoints >= 100) newStars = 2;
+            else if (totalPoints >= 10) newStars = 1;
+
+            userData.stars[category] = newStars;
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            updateUserStatsDisplay();
+        }
+
+        function getUserProgress() {
+            return JSON.parse(localStorage.getItem('userData'));
+        }
+
+        function onCategorySuccess(category) {
+            addPoint(category);
+        }
+
+        function updateUserStatsDisplay() {
+            const statsDiv = document.getElementById("userStats");
+            const nameDisplay = document.getElementById("userNameDisplay");
+            const progressDiv = document.getElementById("userProgressDisplay");
+
+            const username = localStorage.getItem("currentUserName") || "Anonymous";
+            const data = getUserProgress();
+
+            nameDisplay.textContent = `User: ${username}`;
+
+            let html = '';
+            categories.forEach(cat => {
+                const prettyName = cat.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                const pts = data.points[cat];
+                const stars = '⭐'.repeat(data.stars[cat]);
+                html += `<strong>${prettyName}</strong>: ${pts} pts ${stars}<br>`;
+            });
+
+            progressDiv.innerHTML = html;
+            statsDiv.style.display = "block";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePoints();
+            updateUserStatsDisplay();
+        });
+    </script>
+
     <footer>
         <p>&copy; 2025 StarQuest. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
