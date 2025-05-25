@@ -1,6 +1,6 @@
 function submitPhotoFood() {
-    uploadInput = document.getElementById("foodUpload");
-    resultDiv = document.getElementById("result");
+    const uploadInput = document.getElementById("foodUpload");
+    const resultDiv = document.getElementById("result");
 
 
     console.log(uploadInput);
@@ -12,9 +12,10 @@ function submitPhotoFood() {
 
     // Simulate AI detection of empty plate (mock function)
     setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance it¡¯s ¡°empty¡±
+        const success = Math.random() > 0.3; // 70% chance itâ€™s â€œemptyâ€
         if (success) {
-            resultDiv.textContent = "Great job! Plate detected as empty, you've contributed to the world!";h
+            addPoint("food"); 
+            resultDiv.textContent = "Great job! Plate detected as empty, you've contributed to the world!";
         } else {
             resultDiv.textContent = "Hmm... this plate doesn't look empty. Try again!";
         }
@@ -22,8 +23,8 @@ function submitPhotoFood() {
 }
 
 function submitPhotoMarine() {
-    uploadInput = document.getElementById("marineUpload");
-    resultDiv = document.getElementById("result");
+    const uploadInput = document.getElementById("marineUpload");
+    const resultDiv = document.getElementById("result");
 
 
     console.log(uploadInput);
@@ -35,41 +36,19 @@ function submitPhotoMarine() {
 
     // Simulate AI detection of empty plate (mock function)
     setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance it¡¯s ¡°empty¡±
+        const success = Math.random() > 0.3; // 70% chance itâ€™s â€œemptyâ€
         if (success) {
-            resultDiv.textContent = "Great job! You've contributed to the world!"; h
+            addPoint("marine"); 
+            resultDiv.textContent = "Great job! You've contributed to the world!"; 
         } else {
             resultDiv.textContent = "Hmm... this doesn't look like trash. Try again!";
         }
     }, 1000);
 }
 
-function submitPhotoMarine() {
-    uploadInput = document.getElementById("marineUpload");
-    resultDiv = document.getElementById("result");
-
-
-    console.log(uploadInput);
-
-    if (!uploadInput.files.length) {
-        resultDiv.textContent = "Please upload a photo.";
-        return;
-    }
-
-    // Simulate AI detection of empty plate (mock function)
-    setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance it¡¯s ¡°empty¡±
-        if (success) {
-            resultDiv.textContent = "Great job! You've contributed to the world!"; h
-        } else {
-            resultDiv.textContent = "Hmm... this doesn't look like trash. Try again!";
-        }
-    }, 1000)
-}
-
 function submitPhotoSorting() {
-    uploadInput = document.getElementById("sortingUpload");
-    resultDiv = document.getElementById("result");
+    const uploadInput = document.getElementById("sortingUpload");
+    const resultDiv = document.getElementById("result");
 
 
     console.log(uploadInput);
@@ -81,9 +60,10 @@ function submitPhotoSorting() {
 
     // Simulate AI detection of empty plate (mock function)
     setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance it¡¯s ¡°empty¡±
+        const success = Math.random() > 0.3; // 70% chance itâ€™s â€œemptyâ€
         if (success) {
-            resultDiv.textContent = "Great job! You've contributed to the world!"; h
+            addPoint("recycling"); 
+            resultDiv.textContent = "Great job! You've contributed to the world!"; 
         } else {
             resultDiv.textContent = "Hmm... this doesn't look like trash. Try again!";
         }
@@ -91,8 +71,8 @@ function submitPhotoSorting() {
 }
 
 function submitPhotoWelfare() {
-    uploadInput = document.getElementById("welfareUpload");
-    resultDiv = document.getElementById("result");
+    const uploadInput = document.getElementById("welfareUpload");
+    const resultDiv = document.getElementById("result");
 
 
     console.log(uploadInput);
@@ -104,18 +84,19 @@ function submitPhotoWelfare() {
 
     // Simulate AI detection of empty plate (mock function)
     setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance it¡¯s ¡°empty¡±
+        const success = Math.random() > 0.3; // 70% chance itâ€™s â€œemptyâ€
         if (success) {
-            resultDiv.textContent = "Great job! You've contributed to the world!"; h
+            addPoint("animalWelfare"); 
+            resultDiv.textContent = "Great job! You've contributed to the world!"; 
         } else {
             resultDiv.textContent = "Hmm... this doesn't look like an animal. Try again!";
         }
     }, 1000)
 }
 
-function submitPhotoRecycling() {
-    uploadInput = document.getElementById("recycleUpload");
-    resultDiv = document.getElementById("result");
+function submitPhotoWater() {
+    const uploadInput = document.getElementById("waterUpload");
+    const resultDiv = document.getElementById("result");
 
 
     console.log(uploadInput);
@@ -127,48 +108,130 @@ function submitPhotoRecycling() {
 
     // Simulate AI detection of recycle
     setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance it¡¯s ¡°empty¡±
+        const success = Math.random() > 0.3; // 70% chance itâ€™s â€œemptyâ€
         if (success) {
-            resultDiv.textContent = "Great job! You've contributed to the world!"; h
+            addPoint('waterWaste'); 
+            resultDiv.textContent = "Great job! You've contributed to the world!"; 
         } else {
-            resultDiv.textContent = "Hmm... this doesn't look like trash. Try again!";
+            resultDiv.textContent = "Hmm... this doesn't look like water saved. Try again!";
         }
     }, 1000)
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const firebaseConfig = {
+        apiKey: "AIzaSyCZQi8QUejL9wQHkZ8MPgwceaTd17eGo28",
+        authDomain: "betterworld-31ccc.firebaseapp.com",
+        projectId: "betterworld-31ccc",
+        storageBucket: "betterworld-31ccc.appspot.com",
+        messagingSenderId: "137770038282",
+        appId: "1:137770038282:web:f6f2f5fb245604e9c09bf3",
+        measurementId: "G-E5DK3W4HJZ"
+    };
 
-// Firebase Auth Reference
-//const auth = firebase.auth();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-function register() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    function updateGreeting(user) {
+        const greeting = document.getElementById("greeting");
+        if (user && user.displayName) {
+            greeting.textContent = `${user.displayName}, welcome to StarQuest!`;
+        } else {
+            greeting.textContent = "Change Starts With One.";
+        }
+    }
 
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-            document.getElementById("authStatus").textContent = "Registered & Logged in!";
-        })
-        .catch(error => {
-            document.getElementById("authStatus").textContent = error.message;
+    window.register = function () {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const username = document.getElementById("username").value;
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                return user.updateProfile({
+                    displayName: username
+                }).then(() => {
+                    return saveUserData(user); 
+                });
+            })
+            .then(() => {
+                document.getElementById("authStatus").textContent = "Registered & Logged in!";
+            })
+            .catch(error => {
+                document.getElementById("authStatus").textContent = error.message;
+            });
+    };
+
+    window.login = function () {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then(() => {
+                updateGreeting(auth.currentUser);
+                document.getElementById("authStatus").textContent = "Logged in!";
+            })
+            .catch(error => {
+                document.getElementById("authStatus").textContent = error.message;
+            });
+    };
+
+    window.logout = function () {
+        auth.signOut().then(() => {
+            auth.signInWithEmailAndPassword(email, password);
         });
-}
+    };
 
-function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const saveUserData = (user) => {
+        const userRef = db.collection('users').doc(user.uid);  // Firestore document reference for this user
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-            document.getElementById("authStatus").textContent = "Logged in!";
-        })
-        .catch(error => {
-            document.getElementById("authStatus").textContent = error.message;
+        const userData = {
+            displayName: user.displayName,
+            stars: {
+                animalWelfare: 0,
+                food: 0,
+                marine: 0,
+                recycling: 0,
+                waterWaste: 0
+            },
+            points: {
+                animalWelfare: 0,
+                food: 0,
+                marine: 0,
+                recycling: 0,
+                waterWaste: 0
+            },
+        };
+       
+        userRef.set(userData)
+            .then(() => {
+                console.log('User data saved successfully!');
+            })
+            .catch((error) => {
+                console.error('Error saving user data: ', error);
+            });
+    }
+
+    function getUserData(uid) {
+        const userRef = db.collection("users").doc(uid);
+
+        userRef.get().then((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                console.log(userData); // Use the userData object as needed
+            } else {
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
         });
-}
+    }
 
-function logout() {
-    auth.signOut()
-        .then(() => {
-            document.getElementById("authStatus").textContent = "Logged out.";
-        });
-}
+
+    auth.onAuthStateChanged((user) => {
+        updateGreeting(user);
+    });
+
+});
